@@ -10,6 +10,7 @@ namespace Wba.EFbasics.Core.Entities
     {
         public string Name { get; set; }
         //a race has many horses
+        //navigation property
         public ICollection<Horse> Horses { get; set; }
     }
 }
