@@ -1,17 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace Wba.EFbasics.Core.Entities
 {
-    public class Race : BaseEntity
+    public class Contest : BaseEntity
     {
         public string Name { get; set; }
-        //a race has many horses
-        //navigation property
+        public string Location { get; set; }
+        public decimal Distance { get; set; }
+        //one contest has many
+        //many to many by convention
         public ICollection<Horse> Horses { get; set; }
     }
 }

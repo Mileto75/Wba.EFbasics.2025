@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Wba.EFbasics.Web.Data;
 
@@ -11,9 +12,11 @@ using Wba.EFbasics.Web.Data;
 namespace Wba.EFbasics.Web.Migrations
 {
     [DbContext(typeof(HorseDbContext))]
-    partial class HorseDbContextModelSnapshot : ModelSnapshot
+    [Migration("20251104132759_AddOneToOne")]
+    partial class AddOneToOne
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -21,43 +24,6 @@ namespace Wba.EFbasics.Web.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
-
-            modelBuilder.Entity("ContestHorse", b =>
-                {
-                    b.Property<int>("ContestsId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("HorsesId")
-                        .HasColumnType("int");
-
-                    b.HasKey("ContestsId", "HorsesId");
-
-                    b.HasIndex("HorsesId");
-
-                    b.ToTable("ContestHorse");
-                });
-
-            modelBuilder.Entity("Wba.EFbasics.Core.Entities.Contest", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<decimal>("Distance")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<string>("Location")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Contest");
-                });
 
             modelBuilder.Entity("Wba.EFbasics.Core.Entities.Horse", b =>
                 {
@@ -131,21 +97,6 @@ namespace Wba.EFbasics.Web.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Races");
-                });
-
-            modelBuilder.Entity("ContestHorse", b =>
-                {
-                    b.HasOne("Wba.EFbasics.Core.Entities.Contest", null)
-                        .WithMany()
-                        .HasForeignKey("ContestsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Wba.EFbasics.Core.Entities.Horse", null)
-                        .WithMany()
-                        .HasForeignKey("HorsesId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("Wba.EFbasics.Core.Entities.Horse", b =>
