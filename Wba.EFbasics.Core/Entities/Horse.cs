@@ -27,7 +27,7 @@ namespace Wba.EFbasics.Core.Entities
         public Identification Identification { get; set; }
         public int IdentificationId { get; set; }
         //horse does many contests
-        //many to many by convention
-        public ICollection<Contest> Contests { get; set; }
+        //custom many to many
+        public ICollection<ContestHorse> Contests { get; set; }
     }
 }

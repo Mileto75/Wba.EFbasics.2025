@@ -29,13 +29,20 @@ namespace Wba.EFbasics.Web.Data
                 .IsRequired()
                 .HasMaxLength(100);
             #endregion
-
+            //define combined key for ContestHorse
+            #region ContestHorse
+            //create combined key
+            modelBuilder.Entity<ContestHorse>()
+                .HasKey(ch => new {ch.ContestId,ch.HorseId });
+            #endregion
             base.OnModelCreating(modelBuilder);
         }
 
         //Define Dbsets => Tables
         public DbSet<Horse> Horses { get; set; }
         public DbSet<Race> Races { get; set; }
+        public DbSet<Contest> Contests { get; set; }
+        public DbSet<ContestHorse> ContestHorse { get; set; }
         public DbSet<Identification> Identifications { get; set; }
     }
 }

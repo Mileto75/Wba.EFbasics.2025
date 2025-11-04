@@ -12,7 +12,7 @@ namespace Wba.EFbasics.Core.Entities
         public string Location { get; set; }
         public decimal Distance { get; set; }
         //one contest has many
-        //many to many by convention
-        public ICollection<Horse> Horses { get; set; }
+        //custom many to many
+        public ICollection<ContestHorse> Horses { get; set; }
     }
 }
