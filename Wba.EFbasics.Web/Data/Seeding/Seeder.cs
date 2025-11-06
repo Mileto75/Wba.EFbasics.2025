@@ -41,8 +41,28 @@ namespace Wba.EFbasics.Web.Data.Seeding
             };
             #endregion
             #region ContestHorses
-            
+            //use anonymous objects
+            var contestHorses = new[]
+            {
+                new {ContestsId = 1,HorsesId = 1},
+                new {ContestsId = 1,HorsesId = 2},
+                new {ContestsId = 1,HorsesId = 3},
+                new {ContestsId = 2,HorsesId = 1},
+                new {ContestsId = 2,HorsesId = 2},
+                new {ContestsId = 2,HorsesId = 3},
+            };
             #endregion
-         }
+            #region Call Hasdata
+            //let op de volgorde!
+            modelBuilder.Entity<Contest>().HasData(contests);
+            modelBuilder.Entity<Race>().HasData(races);
+            modelBuilder.Entity<Identification>().HasData(identifications);
+            modelBuilder.Entity<Horse>().HasData(horses);
+            //the many to many by convention
+            modelBuilder.
+                Entity($"{nameof(Contest)}{nameof(Horse)}") // = "ContestHorse"
+                .HasData(contestHorses);
+            #endregion
+        }
     }
 }
