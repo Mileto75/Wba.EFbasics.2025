@@ -1,0 +1,48 @@
+﻿using Microsoft.EntityFrameworkCore;
+using Wba.EFbasics.Core.Entities;
+
+namespace Wba.EFbasics.Web.Data.Seeding
+{
+    public static class Seeder
+    {
+        public static void Seed(ModelBuilder modelBuilder)
+        {
+            //seed the data
+            #region Contests
+            var contests = new Contest[]
+            {
+                new Contest{Id = 1,Name= "Poperingse Regatta",Distance = 12.2M,Location = "kortestraat 56, Poperinge" },
+                new Contest{Id = 2,Name= "Veurnse Pannenkoekenrace",Distance = 8.2M,Location = "Langestraat 12, Veurne" },
+
+            };
+            #endregion
+            #region Races
+            var races = new Race[] 
+            {
+                new Race{Id = 1,Name = "Arabian FullBlood"},
+                new Race{Id = 2,Name = "Brabants FarmerHorse"},
+                new Race{Id = 3,Name = "Schoorse Shetlander Pony"}
+            };
+            #endregion
+            #region Identifications
+            var identifications = new Identification[]
+            {
+                new Identification {Id = 1,IdentificationCode = "Alfa56"},
+                new Identification {Id = 2,IdentificationCode = "Tango95"},
+                new Identification {Id = 3,IdentificationCode = "Papa44"},
+            };
+            #endregion
+            #region Horses
+            var horses = new Horse[] 
+            {
+                new Horse{Id = 1,IdentificationId = 1,Name = "Mighty Mouse",RaceId = 1,Country = "Belgium",Weight=250.3M,DateOfBirth = new DateTime(1975,2,7)},
+                new Horse{Id = 2,IdentificationId = 2,Name = "Superbad",RaceId = 2,Country = "Italy",Weight=200.3M,DateOfBirth = new DateTime(2022,2,7)},
+                new Horse{Id = 3,IdentificationId = 3,Name = "StrudelWasser",RaceId = 3,Country = "Germany",Weight=260.3M,DateOfBirth = new DateTime(2019,4,6)},
+            };
+            #endregion
+            #region ContestHorses
+            
+            #endregion
+         }
+    }
+}

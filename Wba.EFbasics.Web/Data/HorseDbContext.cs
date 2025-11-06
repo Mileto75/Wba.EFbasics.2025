@@ -29,7 +29,7 @@ namespace Wba.EFbasics.Web.Data
                 .IsRequired()
                 .HasMaxLength(100);
             #endregion
-
+            
             base.OnModelCreating(modelBuilder);
         }
 
