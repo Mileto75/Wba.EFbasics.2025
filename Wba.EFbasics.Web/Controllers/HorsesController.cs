@@ -34,10 +34,31 @@ namespace Wba.EFbasics.Web.Controllers
         public IActionResult Info(int id)
         {
             //get the horse
+            var horse = _horseDbContext
+                .Horses.FirstOrDefault(h => h.Id == id);
             //check if null
+            if (horse is null)
+            {
+                return NotFound();
+            }
             //fill the model
+            var horsesInfoViewModel =
+                new HorsesInfoViewModel 
+                {
+                    Id = horse.Id,
+                    Country = horse.Country,
+                    DateOfBirth = horse.DateOfBirth.ToShortDateString(),
+                    Race = new BaseViewModel 
+                    {
+                        Id = horse.Race.Id,
+                        Value = horse.Race.Name
+                    },
+                    IdentificationCode = horse.Identification.IdentificationCode,
+                    Value = horse.Name,
+                    Weight = horse.Weight
+                };
             //pass to the view
-            return View();
+            return View(horsesInfoViewModel);
         }
     }
 }
