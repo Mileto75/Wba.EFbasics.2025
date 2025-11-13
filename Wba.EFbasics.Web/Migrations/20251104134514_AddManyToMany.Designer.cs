@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Wba.EFbasics.Web.Data;
 
@@ -11,9 +12,11 @@ using Wba.EFbasics.Web.Data;
 namespace Wba.EFbasics.Web.Migrations
 {
     [DbContext(typeof(HorseDbContext))]
-    partial class HorseDbContextModelSnapshot : ModelSnapshot
+    [Migration("20251104134514_AddManyToMany")]
+    partial class AddManyToMany
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -35,38 +38,6 @@ namespace Wba.EFbasics.Web.Migrations
                     b.HasIndex("HorsesId");
 
                     b.ToTable("ContestHorse");
-
-                    b.HasData(
-                        new
-                        {
-                            ContestsId = 1,
-                            HorsesId = 1
-                        },
-                        new
-                        {
-                            ContestsId = 1,
-                            HorsesId = 2
-                        },
-                        new
-                        {
-                            ContestsId = 1,
-                            HorsesId = 3
-                        },
-                        new
-                        {
-                            ContestsId = 2,
-                            HorsesId = 1
-                        },
-                        new
-                        {
-                            ContestsId = 2,
-                            HorsesId = 2
-                        },
-                        new
-                        {
-                            ContestsId = 2,
-                            HorsesId = 3
-                        });
                 });
 
             modelBuilder.Entity("Wba.EFbasics.Core.Entities.Contest", b =>
@@ -88,23 +59,7 @@ namespace Wba.EFbasics.Web.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Contests");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Distance = 12.2m,
-                            Location = "kortestraat 56, Poperinge",
-                            Name = "Poperingse Regatta"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Distance = 8.2m,
-                            Location = "Langestraat 12, Veurne",
-                            Name = "Veurnse Pannenkoekenrace"
-                        });
+                    b.ToTable("Contest");
                 });
 
             modelBuilder.Entity("Wba.EFbasics.Core.Entities.Horse", b =>
@@ -145,38 +100,6 @@ namespace Wba.EFbasics.Web.Migrations
                     b.HasIndex("RaceId");
 
                     b.ToTable("Horses");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Country = "Belgium",
-                            DateOfBirth = new DateTime(1975, 2, 7, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            IdentificationId = 1,
-                            Name = "Mighty Mouse",
-                            RaceId = 1,
-                            Weight = 250.3m
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Country = "Italy",
-                            DateOfBirth = new DateTime(2022, 2, 7, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            IdentificationId = 2,
-                            Name = "Superbad",
-                            RaceId = 2,
-                            Weight = 200.3m
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Country = "Germany",
-                            DateOfBirth = new DateTime(2019, 4, 6, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            IdentificationId = 3,
-                            Name = "StrudelWasser",
-                            RaceId = 3,
-                            Weight = 260.3m
-                        });
                 });
 
             modelBuilder.Entity("Wba.EFbasics.Core.Entities.Identification", b =>
@@ -193,23 +116,6 @@ namespace Wba.EFbasics.Web.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Identifications");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            IdentificationCode = "Alfa56"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            IdentificationCode = "Tango95"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            IdentificationCode = "Papa44"
-                        });
                 });
 
             modelBuilder.Entity("Wba.EFbasics.Core.Entities.Race", b =>
@@ -228,23 +134,6 @@ namespace Wba.EFbasics.Web.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Races");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Name = "Arabian FullBlood"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Name = "Brabants FarmerHorse"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Name = "Schoorse Shetlander Pony"
-                        });
                 });
 
             modelBuilder.Entity("ContestHorse", b =>
