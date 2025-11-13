@@ -28,7 +28,16 @@ namespace Wba.EFbasics.Web.Controllers
                 Id = h.Id,
                 Value = h.Name
             });
+            ViewBag.PageTitle = "Our horses";
             return View(horsesIndexViewModel);
+        }
+        public IActionResult Info(int id)
+        {
+            //get the horse
+            //check if null
+            //fill the model
+            //pass to the view
+            return View();
         }
     }
 }

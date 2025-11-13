@@ -1,0 +1,14 @@
+﻿@model HorsesIndexViewModel
+
+<h5>@ViewBag.PageTitle</h5>
+<div class="row">
+    @foreach(var horse in Model.Horses)
+    { 
+        <a class="col col-lg-3 border border-1 rounded rounded-2 m-1 p-1 text-center"  asp-controller="Horses" asp-action="Info" asp-route-id="@horse.Id">
+            <div>
+                <p>@horse.Value</p>
+            </div>
+        </a>
+    }
+</div>
+
