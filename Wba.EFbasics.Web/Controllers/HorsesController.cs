@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Wba.EFbasics.Web.Data;
 using Wba.EFbasics.Web.ViewModels;
 
@@ -35,7 +36,10 @@ namespace Wba.EFbasics.Web.Controllers
         {
             //get the horse
             var horse = _horseDbContext
-                .Horses.FirstOrDefault(h => h.Id == id);
+                .Horses
+                .Include(h => h.Race)
+                .Include(h =>h.Identification)
+                .FirstOrDefault(h => h.Id == id);
             //check if null
             if (horse is null)
             {

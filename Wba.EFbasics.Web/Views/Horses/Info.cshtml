@@ -1,0 +1,21 @@
+﻿@model HorsesInfoViewModel
+<div class="row">
+    <div class="col col-lg-4 mx-auto">
+        <div class="card" style="width: 18rem;">
+            <!--tips: add .text-center,.text-right to the .card to change card text alignment-->
+            <img src="https://placehold.co/600x400" class="card-img-top" alt="...">
+            <div class="card-body">
+                <h5 class="card-title">@Model.Value</h5>
+                <h6 class="card-subtitle mb-2 text-muted">Race:</h6>
+                <a asp-controller="Races" asp-action="Horses" asp-route-id="@Model.Race.Id" class="card-text">@Model.Race.Value</a>
+                <h6 class="card-subtitle mb-2 text-muted">Born:</h6>
+                <p class="card-text">@Model.DateOfBirth</p>
+                <h6 class="card-subtitle mb-2 text-muted">Weight</h6>
+                <p class="card-text">@Model.Weight</p>
+                <h6 class="card-subtitle mb-2 text-muted">Identification code</h6>
+                <p class="card-text">@Model.IdentificationCode</p>
+                <a asp-controller="Horses" asp-action="Index" class="btn btn-primary">Back</a>
+            </div>
+        </div>
+    </div>
+</div>
