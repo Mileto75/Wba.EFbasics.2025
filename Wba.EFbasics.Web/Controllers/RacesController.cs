@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Wba.EFbasics.Core.Entities;
 using Wba.EFbasics.Web.Data;
 using Wba.EFbasics.Web.ViewModels;
 
@@ -38,12 +39,29 @@ namespace Wba.EFbasics.Web.Controllers
         [HttpPost]
         public IActionResult Add(RacesAddViewModel racesAddViewModel)
         {
-            //processes the formdata
+            //processes the formdata//
             //Validate the data
             //use the ModelState.IsValid
             //if false => return to the View
+            //check if name exists
+            if(_horseDbContext.Races
+                .Any(r => r.Name.ToUpper().Equals(racesAddViewModel.Name.ToUpper())))
+            {
+                ModelState.AddModelError("Name", "Name exists!");
+            }
+            if (!ModelState.IsValid)
+            {
+                return View(racesAddViewModel);
+            }
             //create entity
+            var newrace = new Race 
+            {
+                Name = racesAddViewModel.Name
+            };
+            //add to change tracker
+            _horseDbContext.Races.Add(newrace);
             //store in database
+            _horseDbContext.SaveChanges();
             //redirect to index
             return RedirectToAction(nameof(Index));
         }
