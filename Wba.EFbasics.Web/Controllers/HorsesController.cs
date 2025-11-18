@@ -15,6 +15,7 @@ namespace Wba.EFbasics.Web.Controllers
             _horseDbContext = horseDbContext;
         }
 
+        [HttpGet]
         public IActionResult Index()
         {
             //Use the DbContext to query the database
@@ -32,6 +33,7 @@ namespace Wba.EFbasics.Web.Controllers
             ViewBag.PageTitle = "Our horses";
             return View(horsesIndexViewModel);
         }
+        [HttpGet]
         public IActionResult Info(int id)
         {
             //get the horse
@@ -63,6 +65,21 @@ namespace Wba.EFbasics.Web.Controllers
                 };
             //pass to the view
             return View(horsesInfoViewModel);
+        }
+        //Crud
+
+
+        [HttpGet]
+        public IActionResult Add()
+        {
+            //show the form
+            return View();
+        }
+        [HttpPost]
+        public IActionResult Add(HorsesAddViewModel horsesAddViewModel)
+        {
+            //receive the form data
+            return View();
         }
     }
 }
