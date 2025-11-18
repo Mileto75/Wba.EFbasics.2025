@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using System.ComponentModel.DataAnnotations;
 
 namespace Wba.EFbasics.Web.ViewModels
 {
@@ -13,7 +14,7 @@ namespace Wba.EFbasics.Web.ViewModels
         [Display(Name = "Date of birth:")]
         [Required]
         [DataType(DataType.Date)]
-        
+
         public DateTime DateOfBirth { get; set; }
         [Display(Name = "Id code")]
         public string IdentificationCode { get; set; }
@@ -21,5 +22,9 @@ namespace Wba.EFbasics.Web.ViewModels
         [Display(Name = "Weight:")]
         
         public decimal Weight { get; set; }
+        //datatypes for select dropdown in html
+        
+        public int RaceId { get; set; }
+        public IEnumerable<SelectListItem> Races { get; set; }
     }
 }

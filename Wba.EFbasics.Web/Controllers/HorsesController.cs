@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Wba.EFbasics.Core.Entities;
 using Wba.EFbasics.Web.Data;
 using Wba.EFbasics.Web.ViewModels;
 
@@ -56,8 +58,8 @@ namespace Wba.EFbasics.Web.Controllers
                     DateOfBirth = horse.DateOfBirth.ToShortDateString(),
                     Race = new BaseViewModel 
                     {
-                        Id = horse.Race.Id,
-                        Value = horse.Race.Name
+                        Id = horse?.Race?.Id ?? 0,
+                        Value = horse?.Race?.Name ?? "<NoRace>"
                     },
                     IdentificationCode = horse.Identification.IdentificationCode,
                     Value = horse.Name,
@@ -73,7 +75,19 @@ namespace Wba.EFbasics.Web.Controllers
         public IActionResult Add()
         {
             //show the form
-            return View();
+            //declare a viewmodel
+            //fill the races
+            var horsesAddViewModel = new HorsesAddViewModel
+            {
+                DateOfBirth = DateTime.Now,
+                Races = _horseDbContext.Races.ToList().Select(r =>
+                new SelectListItem
+                {
+                    Text = r.Name,
+                    Value = r.Id.ToString()
+                })
+            };
+            return View(horsesAddViewModel);
         }
         [HttpPost]
         public IActionResult Add(HorsesAddViewModel horsesAddViewModel)
@@ -87,9 +101,37 @@ namespace Wba.EFbasics.Web.Controllers
             //receive the form data
             if(!ModelState.IsValid)
             {
+                //reload the list of races
+                horsesAddViewModel.Races
+                    = _horseDbContext.Races.ToList().Select(r =>
+                new SelectListItem
+                {
+                    Text = r.Name,
+                    Value = r.Id.ToString()
+                });
                 return View(horsesAddViewModel);
             }
-            return View();
+            //Add the horse to the database
+            //create a horse object
+            var horse = new Horse 
+            {
+                Name = horsesAddViewModel.Name,
+                Country = horsesAddViewModel.Country,
+                DateOfBirth = horsesAddViewModel.DateOfBirth,
+                RaceId = horsesAddViewModel.RaceId,
+                Identification = new Identification 
+                {
+                    IdentificationCode = horsesAddViewModel.IdentificationCode
+                },
+                Weight = horsesAddViewModel.Weight
+            };
+            //track the new horse
+            _horseDbContext.Horses.Add(horse);
+            //save to the database
+            _horseDbContext.SaveChanges();
+            //redirect to the index page
+            return RedirectToAction(nameof(Index));
+
         }
     }
 }
