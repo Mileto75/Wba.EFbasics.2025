@@ -1,0 +1,15 @@
+﻿@model RacesIndexViewModel
+<div class="row">
+    <div class="col col-lg-5">
+        <a asp-controller="Races" asp-action="Add" class="btn btn-outline-info">Add</a>
+    </div>
+</div>
+<div class="row">
+    @foreach(var race in Model.Races)
+    { 
+        <div class="col col-lg-3 border border-1 rounded rounded-2 m-2 p-2 text-center">
+            @race.Value
+        </div>
+    }
+</div>
+
