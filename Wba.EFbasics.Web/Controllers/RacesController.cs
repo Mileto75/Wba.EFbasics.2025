@@ -40,11 +40,12 @@ namespace Wba.EFbasics.Web.Controllers
         {
             //processes the formdata
             //Validate the data
-                //use the ModelState.IsValid
-                //if false => return to the View
+            //use the ModelState.IsValid
+            //if false => return to the View
             //create entity
             //store in database
             //redirect to index
+            return RedirectToAction(nameof(Index));
         }
     }
 }

@@ -1,0 +1,13 @@
+﻿@model RacesAddViewModel
+<div class="row">
+    <div class="col col-lg-5 mx-auto">
+        <form asp-controller="Races" asp-action="Add" method="post">
+            <div class="form-group">
+                <label asp-for="Name"></label>
+                <input asp-for="Name" class="form-control">
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <button type="submit" class="btn btn-primary">Save</button>
+        </form>
+    </div>
+</div>
