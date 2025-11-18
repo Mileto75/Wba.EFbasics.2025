@@ -29,5 +29,22 @@ namespace Wba.EFbasics.Web.Controllers
             //pass to the view
             return View(racesIndexViewModel);
         }
+        [HttpGet]
+        public IActionResult Add()
+        {
+            //shows the form
+            return View();
+        }
+        [HttpPost]
+        public IActionResult Add(RacesAddViewModel racesAddViewModel)
+        {
+            //processes the formdata
+            //Validate the data
+                //use the ModelState.IsValid
+                //if false => return to the View
+            //create entity
+            //store in database
+            //redirect to index
+        }
     }
 }
