@@ -78,7 +78,17 @@ namespace Wba.EFbasics.Web.Controllers
         [HttpPost]
         public IActionResult Add(HorsesAddViewModel horsesAddViewModel)
         {
+            //custom validatie
+            //voor de Modelstate controle
+            if(horsesAddViewModel.DateOfBirth >= DateTime.Now)
+            {
+                ModelState.AddModelError("DateOfBirth", "Horse must be born!");
+            }
             //receive the form data
+            if(!ModelState.IsValid)
+            {
+                return View(horsesAddViewModel);
+            }
             return View();
         }
     }

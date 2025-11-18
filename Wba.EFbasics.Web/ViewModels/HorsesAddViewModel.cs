@@ -1,11 +1,25 @@
-﻿namespace Wba.EFbasics.Web.ViewModels
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Wba.EFbasics.Web.ViewModels
 {
     public class HorsesAddViewModel
     {
+        [Display(Name = "Horse name:")]
+        [Required(ErrorMessage = "Please provide a name!")]
         public string Name { get; set; }
+        [Display(Name = "Origin:")]
+        [Required]
         public string Country { get; set; }
-        public string DateOfBirth { get; set; }
+        [Display(Name = "Date of birth:")]
+        [Required]
+        [DataType(DataType.Date)]
+        
+        public DateTime DateOfBirth { get; set; }
+        [Display(Name = "Id code")]
         public string IdentificationCode { get; set; }
+        [Required]
+        [Display(Name = "Weight:")]
+        
         public decimal Weight { get; set; }
     }
 }
