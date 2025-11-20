@@ -1,11 +1,14 @@
-﻿@model HorsesAddViewModel
+﻿@model HorsesEditViewModel
 
 <div class="row">
     <div class="col col-lg-5 mx-auto">
-        <h5>Add new Horse</h5>
-        <form asp-controller="Horses" asp-action="Add" method="post">
+        <form asp-controller="Horses" asp-action="Edit" method="post">
             @* call the HorsesFormPartial *@
             <partial name="_HorsesFormPartial" model="@Model" />
+            @* send horse id too *@
+            <input type="hidden" asp-for="Id" />
         </form>
     </div>
 </div>
+
+

@@ -24,7 +24,7 @@ namespace Wba.EFbasics.Web.ViewModels
         public decimal Weight { get; set; }
         //datatypes for select dropdown in html
         
-        public int RaceId { get; set; }
+        public int? RaceId { get; set; }
         public IEnumerable<SelectListItem> Races { get; set; }
     }
 }

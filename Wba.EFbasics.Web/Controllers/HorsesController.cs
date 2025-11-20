@@ -90,6 +90,7 @@ namespace Wba.EFbasics.Web.Controllers
             return View(horsesAddViewModel);
         }
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult Add(HorsesAddViewModel horsesAddViewModel)
         {
             //custom validatie
@@ -132,6 +133,52 @@ namespace Wba.EFbasics.Web.Controllers
             //redirect to the index page
             return RedirectToAction(nameof(Index));
 
+        }
+        //Edit
+        [HttpGet]
+        public IActionResult Edit(int id)//shows the edit form
+        {
+            //get the horse to edit
+            var horse = _horseDbContext.Horses
+                .Include(h => h.Identification)
+                .FirstOrDefault(h => h.Id == id);
+            //check if null
+            if(horse == null)
+            {
+                return NotFound();
+            }
+            //fill the viewmodel
+            var horsesEditViewModel = new HorsesEditViewModel
+            {
+                Id = horse.Id,
+                Name = horse.Name,
+                IdentificationCode = horse.Identification.IdentificationCode,
+                RaceId = horse.RaceId,
+                DateOfBirth = horse.DateOfBirth,
+                Country = horse.Country,
+                Weight = horse.Weight,
+                //load the list of races
+                Races
+                    = _horseDbContext.Races.ToList().Select(r =>
+                new SelectListItem
+                {
+                    Text = r.Name,
+                    Value = r.Id.ToString()
+                })
+            };
+            // pass to the view
+            return View(horsesEditViewModel);
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Edit(HorsesEditViewModel horsesEditViewModel)
+        {
+            //get the horse
+            //another null check
+            //Validate
+            //update the horse
+            //Save to the database
+            return RedirectToAction(nameof(Index));
         }
     }
 }
