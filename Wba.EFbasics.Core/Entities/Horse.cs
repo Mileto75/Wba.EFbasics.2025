@@ -29,5 +29,7 @@ namespace Wba.EFbasics.Core.Entities
         //horse does many contests
         //many to many by convention
         public ICollection<Contest> Contests { get; set; }
+        //image
+        public string ImageFilename { get; set; }
     }
 }

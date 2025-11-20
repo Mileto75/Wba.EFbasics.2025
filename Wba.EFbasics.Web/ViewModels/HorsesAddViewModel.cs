@@ -26,5 +26,7 @@ namespace Wba.EFbasics.Web.ViewModels
         
         public int? RaceId { get; set; }
         public IEnumerable<SelectListItem> Races { get; set; }
+        //file upload
+        public IFormFile Image { get; set; }
     }
 }

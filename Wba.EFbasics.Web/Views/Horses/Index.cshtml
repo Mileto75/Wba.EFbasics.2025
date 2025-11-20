@@ -16,7 +16,10 @@
                     <a asp-controller="Horses" asp-action="Info" asp-route-id="@horse.Id"
                        class="btn btn-outline-info">Info</a>
                 <a asp-controller="Horses" asp-action="Edit" asp-route-id="@horse.Id" 
-                      class="btn btn-outline-warning">Edit</a></p>
+                      class="btn btn-outline-warning">Edit</a>
+                <a asp-controller="Horses" asp-action="ConfirmDelete" asp-route-id="@horse.Id" 
+                      class="btn btn-outline-danger">Delete</a>
+                </p>
             </div>
         </div>
     }

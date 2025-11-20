@@ -1,6 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using System.Threading.Tasks;
 using Wba.EFbasics.Core.Entities;
 using Wba.EFbasics.Web.Data;
 using Wba.EFbasics.Web.ViewModels;
@@ -11,10 +13,12 @@ namespace Wba.EFbasics.Web.Controllers
     {
         //inject(request) a horseDbContext
         private readonly HorseDbContext _horseDbContext;
+        private readonly IWebHostEnvironment _webHostEnvironment;
 
-        public HorsesController(HorseDbContext horseDbContext)
+        public HorsesController(HorseDbContext horseDbContext, IWebHostEnvironment webHostEnvironment)
         {
             _horseDbContext = horseDbContext;
+            _webHostEnvironment = webHostEnvironment;
         }
 
         [HttpGet]
@@ -61,6 +65,7 @@ namespace Wba.EFbasics.Web.Controllers
                         Id = horse?.Race?.Id ?? 0,
                         Value = horse?.Race?.Name ?? "<NoRace>"
                     },
+                    Image = horse.ImageFilename,
                     IdentificationCode = horse.Identification.IdentificationCode,
                     Value = horse.Name,
                     Weight = horse.Weight
@@ -91,7 +96,7 @@ namespace Wba.EFbasics.Web.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Add(HorsesAddViewModel horsesAddViewModel)
+        public async Task<IActionResult> Add(HorsesAddViewModel horsesAddViewModel)
         {
             //custom validatie
             //check if not in future
@@ -99,7 +104,6 @@ namespace Wba.EFbasics.Web.Controllers
             {
                 ModelState.AddModelError("DateOfBirth", "Horse must be born!");
             }
-            //receive the form data
             if(!ModelState.IsValid)
             {
                 //reload the list of races
@@ -112,7 +116,35 @@ namespace Wba.EFbasics.Web.Controllers
                 });
                 return View(horsesAddViewModel);
             }
-            //Add the horse to the database
+            string newFilename = "https://placehold.co/600x400";
+            if (horsesAddViewModel.Image is not null)
+            {
+                //Add the horse to the database
+                //handle file upload
+                //1 create unique filename
+                newFilename = $"{Guid.NewGuid()}_{horsesAddViewModel.Image.FileName}";
+                //2 build path to img folder
+                var pathToImgFolder = Path.Combine(_webHostEnvironment.WebRootPath, "img");
+                //3 check if path exists => if not, create directory
+                if (!Directory.Exists(pathToImgFolder))
+                {
+                    Directory.CreateDirectory(pathToImgFolder);
+                }
+                //4 build full path to file
+                var fullPathToFile = Path.Combine(pathToImgFolder, newFilename);
+                //5 check if file exists
+                if (Path.Exists(fullPathToFile))
+                {
+                    //fix later with exception
+                    Console.WriteLine("FileExists");
+                }
+                //6 copy file from memory to filepath location
+                using (FileStream fileStream = new(fullPathToFile, FileMode.Create))
+                {
+                    //copy from memory(iformfile) to fullPathtoFile
+                    horsesAddViewModel.Image.CopyTo(fileStream);
+                }
+            }
             //create a horse object
             var horse = new Horse 
             {
@@ -120,12 +152,14 @@ namespace Wba.EFbasics.Web.Controllers
                 Country = horsesAddViewModel.Country,
                 DateOfBirth = horsesAddViewModel.DateOfBirth,
                 RaceId = horsesAddViewModel.RaceId,
+                ImageFilename = newFilename,
                 Identification = new Identification 
                 {
                     IdentificationCode = horsesAddViewModel.IdentificationCode
                 },
                 Weight = horsesAddViewModel.Weight
             };
+            
             //track the new horse
             _horseDbContext.Horses.Add(horse);
             //save to the database
@@ -213,6 +247,45 @@ namespace Wba.EFbasics.Web.Controllers
             
             //Save to the database
             _horseDbContext.SaveChanges();
+            return RedirectToAction(nameof(Index));
+        }
+        //delete
+        //confirm dialog
+        public IActionResult ConfirmDelete(int id)
+        {
+            //get the horse to delete
+            var deleteHorse = _horseDbContext.Horses
+                .FirstOrDefault(h => h.Id == id);
+            //check if  null
+            if(deleteHorse is null)
+            {
+                return NotFound();
+            }
+            //pass id and name to the view
+            var horsesConfirmDeleteViewModel = new HorsesConfirmDeleteViewModel
+            {
+                Id = deleteHorse.Id,
+                Value = deleteHorse.Name
+            };
+            return View(horsesConfirmDeleteViewModel);
+        }
+        //the real delete method
+        public IActionResult Delete(HorsesConfirmDeleteViewModel horsesConfirmDeleteViewModel)
+        {
+            //get the horse
+            var deleteHorse = _horseDbContext.Horses
+                .FirstOrDefault(h => h.Id == horsesConfirmDeleteViewModel.Id);
+            //check if null
+            if(deleteHorse is null)
+            {
+                //change later to use TempData in state management
+                return NotFound();
+            }
+            //mark for deletion
+            _horseDbContext.Horses.Remove(deleteHorse);
+            //push changes to the database = delete statement
+            _horseDbContext.SaveChanges();
+            //redirect to index
             return RedirectToAction(nameof(Index));
         }
     }

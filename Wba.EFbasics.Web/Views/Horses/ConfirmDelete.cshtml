@@ -1,0 +1,13 @@
+﻿@model HorsesConfirmDeleteViewModel
+
+<form asp-controller="Horses" asp-action="Delete" method="post">
+    @* send the horse id *@
+    <input type="hidden" asp-for="Id" />
+    <div class="alert alert-danger" role="alert">
+        Are you sure you want to delete <strong>@Model.Value</strong>?
+        <p>
+            <button type="submit" class="btn btn-outline-danger">Yes</button>
+            <a asp-controller="Horses" asp-action="Index" class="btn btn-outline-primary">Cancel</a>
+        </p>
+    </div>
+</form>
