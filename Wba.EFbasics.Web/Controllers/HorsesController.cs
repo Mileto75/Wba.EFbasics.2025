@@ -94,7 +94,7 @@ namespace Wba.EFbasics.Web.Controllers
         public IActionResult Add(HorsesAddViewModel horsesAddViewModel)
         {
             //custom validatie
-            //voor de Modelstate controle
+            //check if not in future
             if(horsesAddViewModel.DateOfBirth >= DateTime.Now)
             {
                 ModelState.AddModelError("DateOfBirth", "Horse must be born!");
@@ -174,10 +174,45 @@ namespace Wba.EFbasics.Web.Controllers
         public IActionResult Edit(HorsesEditViewModel horsesEditViewModel)
         {
             //get the horse
+            var editHorse = _horseDbContext.Horses
+                .Include(h => h.Identification)
+                .FirstOrDefault(h => h.Id == horsesEditViewModel.Id);
             //another null check
+            if(editHorse is null)
+            {
+                //later change this to TempData message with redirect
+                return NotFound();
+            }
             //Validate
+            //custom validatie
+            //check if not in future
+            if (horsesEditViewModel.DateOfBirth >= DateTime.Now)
+            {
+                ModelState.AddModelError("DateOfBirth", "Horse must be born!");
+            }
+            if (!ModelState.IsValid)
+            {
+                //reload the list of races
+                horsesEditViewModel.Races
+                    = _horseDbContext.Races.ToList().Select(r =>
+                new SelectListItem
+                {
+                    Text = r.Name,
+                    Value = r.Id.ToString()
+                });
+                return View(horsesEditViewModel);
+            }
             //update the horse
+            //assign all the properties
+            editHorse.Name = horsesEditViewModel.Name;
+            editHorse.RaceId = horsesEditViewModel.RaceId;
+            editHorse.Weight = horsesEditViewModel.Weight;
+            editHorse.Identification.IdentificationCode = horsesEditViewModel.IdentificationCode;
+            editHorse.Country = horsesEditViewModel.Country;
+            editHorse.DateOfBirth = horsesEditViewModel.DateOfBirth;
+            
             //Save to the database
+            _horseDbContext.SaveChanges();
             return RedirectToAction(nameof(Index));
         }
     }

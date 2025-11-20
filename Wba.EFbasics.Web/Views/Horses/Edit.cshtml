@@ -7,6 +7,7 @@
             <partial name="_HorsesFormPartial" model="@Model" />
             @* send horse id too *@
             <input type="hidden" asp-for="Id" />
+            <a asp-controller="Horses" asp-action="Index" class="btn btn-outline-danger">Cancel</a>
         </form>
     </div>
 </div>
