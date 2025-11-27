@@ -169,7 +169,7 @@ namespace Wba.EFbasics.Web.Controllers
             }
             catch(DbUpdateException dbUpdateException)
             {
-                //log the exception in database or file
+                //in production log the exception in database or file
                 //create the user error message
                 TempData["errorMessage"] = "Something went wrong!";
                 return RedirectToAction(nameof(Index));
