@@ -163,7 +163,21 @@ namespace Wba.EFbasics.Web.Controllers
             //track the new horse
             _horseDbContext.Horses.Add(horse);
             //save to the database
-            _horseDbContext.SaveChanges();
+            try 
+            {
+                _horseDbContext.SaveChanges();
+            }
+            catch(DbUpdateException dbUpdateException)
+            {
+                //log the exception in database or file
+                //create the user error message
+                TempData["errorMessage"] = "Something went wrong!";
+                return RedirectToAction(nameof(Index));
+            }
+            //create session with user message
+            //HttpContext.Session.SetString("message", "Horse created successfully!");
+            //use tempdata
+            TempData["message"] = "Horse created successfully!";
             //redirect to the index page
             return RedirectToAction(nameof(Index));
 

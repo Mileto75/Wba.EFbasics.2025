@@ -4,6 +4,7 @@ using Wba.EFbasics.Web.Data;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+builder.Services.AddSession();
 //add the database service
 builder.Services.AddDbContext<HorseDbContext>(
     options => options
@@ -23,7 +24,7 @@ if (!app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
-
+app.UseSession();
 app.UseRouting();
 
 app.UseAuthorization();
