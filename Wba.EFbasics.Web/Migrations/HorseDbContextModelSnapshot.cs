@@ -34,7 +34,7 @@ namespace Wba.EFbasics.Web.Migrations
 
                     b.HasIndex("HorsesId");
 
-                    b.ToTable("ContestHorse");
+                    b.ToTable("ContestHorse", (string)null);
 
                     b.HasData(
                         new
@@ -88,7 +88,7 @@ namespace Wba.EFbasics.Web.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Contests");
+                    b.ToTable("Contests", (string)null);
 
                     b.HasData(
                         new
@@ -150,7 +150,7 @@ namespace Wba.EFbasics.Web.Migrations
 
                     b.HasIndex("RaceId");
 
-                    b.ToTable("Horses");
+                    b.ToTable("Horses", (string)null);
 
                     b.HasData(
                         new
@@ -201,7 +201,7 @@ namespace Wba.EFbasics.Web.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Identifications");
+                    b.ToTable("Identifications", (string)null);
 
                     b.HasData(
                         new
@@ -236,7 +236,7 @@ namespace Wba.EFbasics.Web.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Races");
+                    b.ToTable("Races", (string)null);
 
                     b.HasData(
                         new
