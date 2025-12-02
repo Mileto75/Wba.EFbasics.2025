@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Text.Json;
+using System.Threading.Tasks;
 using Wba.EFbasics.Web.Data;
 using Wba.EFbasics.Web.ViewModels;
 
@@ -58,7 +59,6 @@ namespace Wba.EFbasics.Web.Controllers
                 {
                     //change the quantity
                     horseInCart.Quantity++;
-                    
                 }
                 else
                 {
@@ -85,23 +85,51 @@ namespace Wba.EFbasics.Web.Controllers
                 });
             }
             //Add to session
+            HttpContext.Session
+                .SetInt32("itemsInCart", cartIndexViewModel
+                .CartItems.Sum(c => c.Quantity));
+
             HttpContext.Session.SetString("cartItems",
                 JsonSerializer.Serialize(cartIndexViewModel.CartItems));
             return RedirectToAction(nameof(Index));
         }
-        public IActionResult Remove(int id)
+        public async Task<IActionResult> Remove(int id)
         {
             //check if id exists
-
-            //get the session cartItems list
-            
-            //get the horse from the list
+            if(!await _horseDbContext
+                .Horses
+                .AnyAsync(h => h.Id == id))
+            {
+                return NotFound();
+            }
+            //If session cartItems exists
+            if(HttpContext.Session.Keys.Contains("cartItems"))
+            {
+                //get the session var
+                var cartItems = JsonSerializer.Deserialize<List<CartItemModel>>
+                    (HttpContext.Session.GetString("cartItems"));
+                //get the horse from the list
+                var horse = cartItems.FirstOrDefault(h => h.Id == id);
                 //if null
-            //check if quantity > 1
+                if(horse is null)
+                {
+                    return NotFound();
+                }
+                //check if quantity > 1
                 //quantity--
-                //remove from list
-            
-            //put list in session cartitems
+                if (horse.Quantity > 1)
+                {
+                    horse.Quantity--;
+                }
+                else
+                {
+                    //remove from list
+                    cartItems.Remove(horse); 
+                }
+                HttpContext.Session.SetInt32("itemsInCart", cartItems.Sum(c => c.Quantity));
+                HttpContext.Session.SetString("cartItems", JsonSerializer
+                    .Serialize(cartItems));
+            }
             return RedirectToAction(nameof(Index));
         }
     }
