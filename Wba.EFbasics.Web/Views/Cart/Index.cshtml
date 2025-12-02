@@ -1,0 +1,47 @@
+﻿@model CartIndexViewModel
+
+<div class="row">
+    <div class="col col-lg-6 mx-auto">
+        @* check if items in cart *@
+        @if(Model.CartItems.Count == 0)
+        { 
+            <div class="alert alert-primary" role="alert">
+                No items in cart!
+            </div>
+        }
+        else
+        { 
+            //show the items in cart
+            <table class="table table-hover table-responsive">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Quantity</th>
+                        <th>Price</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach(var cartItem in Model.CartItems)
+                    { 
+                        <tr>
+                            <td>@cartItem.Value</td>
+                            <td>@cartItem.Quantity</td>
+                            <td>@cartItem.Price.ToString("0.##") &euro;</td>
+                            <td>
+                                <a asp-controller="Cart"
+                                   asp-action="Remove"
+                                   asp-route-id="@cartItem.Id"
+                                   class="btn btn-danger"> - </a>
+                                <a asp-controller="Cart"
+                                   asp-action="Add"
+                                   asp-route-id="@cartItem.Id"
+                                   class="btn btn-info"> + </a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+    </div>
+</div>
