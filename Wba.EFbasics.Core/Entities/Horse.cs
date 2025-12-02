@@ -25,6 +25,7 @@ namespace Wba.EFbasics.Core.Entities
         public string Country { get; set; }
         //one to one relation
         public Identification Identification { get; set; }
+        public decimal Price { get; set; }
         public int IdentificationId { get; set; }
         //horse does many contests
         //many to many by convention

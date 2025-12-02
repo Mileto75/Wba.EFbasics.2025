@@ -22,6 +22,9 @@ namespace Wba.EFbasics.Web.Data
                 .Property(h => h.Country)
                 .IsRequired()
                 .HasMaxLength(100);
+            modelBuilder.Entity<Horse>()
+                .Property(h => h.Price)
+                .HasColumnType("money");
             #endregion
             //configure Race entity
             #region Race config

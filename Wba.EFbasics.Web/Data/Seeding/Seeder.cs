@@ -35,9 +35,9 @@ namespace Wba.EFbasics.Web.Data.Seeding
             #region Horses
             var horses = new Horse[] 
             {
-                new Horse{Id = 1,IdentificationId = 1,Name = "Mighty Mouse",RaceId = 1,Country = "Belgium",Weight=250.3M,DateOfBirth = new DateTime(1975,2,7)},
-                new Horse{Id = 2,IdentificationId = 2,Name = "Superbad",RaceId = 2,Country = "Italy",Weight=200.3M,DateOfBirth = new DateTime(2022,2,7)},
-                new Horse{Id = 3,IdentificationId = 3,Name = "StrudelWasser",RaceId = 3,Country = "Germany",Weight=260.3M,DateOfBirth = new DateTime(2019,4,6)},
+                new Horse{Id = 1,IdentificationId = 1,Name = "Mighty Mouse",RaceId = 1,Country = "Belgium",Price = 8000M,Weight=250.3M,DateOfBirth = new DateTime(1975,2,7)},
+                new Horse{Id = 2,IdentificationId = 2,Name = "Superbad",RaceId = 2,Country = "Italy",Price = 5000M,Weight=200.3M,DateOfBirth = new DateTime(2022,2,7)},
+                new Horse{Id = 3,IdentificationId = 3,Name = "StrudelWasser",RaceId = 3,Price = 23000M,Country = "Germany",Weight=260.3M,DateOfBirth = new DateTime(2019,4,6)},
             };
             #endregion
             #region ContestHorses
