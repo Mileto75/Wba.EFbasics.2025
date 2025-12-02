@@ -40,6 +40,24 @@
                             </td>
                         </tr>
                     }
+                    <tr>
+                        <td></td>
+                        <td>Subtotal:</td>
+                        <td>@Model.SubTotal.ToString("0.##")</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td>Vat(21%):</td>
+                        <td>@Model.Vat.ToString("0.##")</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td>Total:</td>
+                        <td>@Model.Total.ToString("0.##")</td>
+                        <td><a href="#" class="btn btn-primary"> Checkout </a></td>
+                    </tr>
                 </tbody>
             </table>
         }

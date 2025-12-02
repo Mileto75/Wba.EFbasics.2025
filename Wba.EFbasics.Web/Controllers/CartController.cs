@@ -31,6 +31,11 @@ namespace Wba.EFbasics.Web.Controllers
                     (HttpContext.Session.GetString("cartItems"));
             }
             //pass to the view
+            //calculate the totals
+            cartIndexViewModel.SubTotal = cartIndexViewModel.CartItems
+                .Sum(c => c.Price*c.Quantity);
+            cartIndexViewModel.Vat = cartIndexViewModel.SubTotal * 0.21M;
+            cartIndexViewModel.Total = cartIndexViewModel.SubTotal + cartIndexViewModel.Vat;
             return View(cartIndexViewModel);
         }
         public async Task<IActionResult> Add(int id)
