@@ -91,6 +91,17 @@ namespace Wba.EFbasics.Web.Controllers
         }
         public IActionResult Remove(int id)
         {
+            //check if id exists
+
+            //get the session cartItems list
+            
+            //get the horse from the list
+                //if null
+            //check if quantity > 1
+                //quantity--
+                //remove from list
+            
+            //put list in session cartitems
             return RedirectToAction(nameof(Index));
         }
     }
