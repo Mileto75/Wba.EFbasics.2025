@@ -5,6 +5,8 @@ using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
 using Wba.EFbasics.Core.Entities;
 using Wba.EFbasics.Web.Data;
+using Wba.EFbasics.Web.Services;
+using Wba.EFbasics.Web.Services.Interfaces;
 using Wba.EFbasics.Web.ViewModels;
 
 namespace Wba.EFbasics.Web.Controllers
@@ -14,11 +16,13 @@ namespace Wba.EFbasics.Web.Controllers
         //inject(request) a horseDbContext
         private readonly HorseDbContext _horseDbContext;
         private readonly IWebHostEnvironment _webHostEnvironment;
+        private readonly IFormBuilderService _formBuilderService;
 
-        public HorsesController(HorseDbContext horseDbContext, IWebHostEnvironment webHostEnvironment)
+        public HorsesController(HorseDbContext horseDbContext, IWebHostEnvironment webHostEnvironment, IFormBuilderService formBuilderService)
         {
             _horseDbContext = horseDbContext;
             _webHostEnvironment = webHostEnvironment;
+            _formBuilderService = formBuilderService;
         }
 
         [HttpGet]
@@ -77,7 +81,7 @@ namespace Wba.EFbasics.Web.Controllers
 
 
         [HttpGet]
-        public IActionResult Add()
+        public async Task<IActionResult> Add()
         {
             //show the form
             //declare a viewmodel
@@ -85,12 +89,8 @@ namespace Wba.EFbasics.Web.Controllers
             var horsesAddViewModel = new HorsesAddViewModel
             {
                 DateOfBirth = DateTime.Now,
-                Races = _horseDbContext.Races.ToList().Select(r =>
-                new SelectListItem
-                {
-                    Text = r.Name,
-                    Value = r.Id.ToString()
-                })
+                //fill the dropdown with races
+                Races = await _formBuilderService.GetRaces()
             };
             return View(horsesAddViewModel);
         }
@@ -108,12 +108,7 @@ namespace Wba.EFbasics.Web.Controllers
             {
                 //reload the list of races
                 horsesAddViewModel.Races
-                    = _horseDbContext.Races.ToList().Select(r =>
-                new SelectListItem
-                {
-                    Text = r.Name,
-                    Value = r.Id.ToString()
-                });
+                    = await _formBuilderService.GetRaces();
                 return View(horsesAddViewModel);
             }
             string newFilename = "https://placehold.co/600x400";
@@ -184,7 +179,7 @@ namespace Wba.EFbasics.Web.Controllers
         }
         //Edit
         [HttpGet]
-        public IActionResult Edit(int id)//shows the edit form
+        public async Task<IActionResult> Edit(int id)//shows the edit form
         {
             //get the horse to edit
             var horse = _horseDbContext.Horses
@@ -207,19 +202,14 @@ namespace Wba.EFbasics.Web.Controllers
                 Weight = horse.Weight,
                 //load the list of races
                 Races
-                    = _horseDbContext.Races.ToList().Select(r =>
-                new SelectListItem
-                {
-                    Text = r.Name,
-                    Value = r.Id.ToString()
-                })
+                    = await _formBuilderService.GetRaces()
             };
             // pass to the view
             return View(horsesEditViewModel);
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Edit(HorsesEditViewModel horsesEditViewModel)
+        public async Task<IActionResult> Edit(HorsesEditViewModel horsesEditViewModel)
         {
             //get the horse
             var editHorse = _horseDbContext.Horses
@@ -242,12 +232,7 @@ namespace Wba.EFbasics.Web.Controllers
             {
                 //reload the list of races
                 horsesEditViewModel.Races
-                    = _horseDbContext.Races.ToList().Select(r =>
-                new SelectListItem
-                {
-                    Text = r.Name,
-                    Value = r.Id.ToString()
-                });
+                    = await _formBuilderService.GetRaces();
                 return View(horsesEditViewModel);
             }
             //update the horse

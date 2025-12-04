@@ -1,9 +1,13 @@
 using Microsoft.EntityFrameworkCore;
 using Wba.EFbasics.Web.Data;
+using Wba.EFbasics.Web.Services;
+using Wba.EFbasics.Web.Services.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+// Add services to the container. => DI
+//register the FormBuilderService
+builder.Services.AddScoped<IFormBuilderService, FormBuilderService>();
 //activate the server session
 builder.Services.AddSession();
 //add the database service
