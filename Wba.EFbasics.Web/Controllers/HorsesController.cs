@@ -15,14 +15,14 @@ namespace Wba.EFbasics.Web.Controllers
     {
         //inject(request) a horseDbContext
         private readonly HorseDbContext _horseDbContext;
-        private readonly IWebHostEnvironment _webHostEnvironment;
         private readonly IFormBuilderService _formBuilderService;
+        private readonly IFileService _fileService;
 
-        public HorsesController(HorseDbContext horseDbContext, IWebHostEnvironment webHostEnvironment, IFormBuilderService formBuilderService)
+        public HorsesController(HorseDbContext horseDbContext, IFormBuilderService formBuilderService, IFileService fileService)
         {
             _horseDbContext = horseDbContext;
-            _webHostEnvironment = webHostEnvironment;
             _formBuilderService = formBuilderService;
+            _fileService = fileService;
         }
 
         [HttpGet]
@@ -114,31 +114,7 @@ namespace Wba.EFbasics.Web.Controllers
             string newFilename = "https://placehold.co/600x400";
             if (horsesAddViewModel.Image is not null)
             {
-                //Add the horse to the database
-                //handle file upload
-                //1 create unique filename
-                newFilename = $"{Guid.NewGuid()}_{horsesAddViewModel.Image.FileName}";
-                //2 build path to img folder
-                var pathToImgFolder = Path.Combine(_webHostEnvironment.WebRootPath, "img");
-                //3 check if path exists => if not, create directory
-                if (!Directory.Exists(pathToImgFolder))
-                {
-                    Directory.CreateDirectory(pathToImgFolder);
-                }
-                //4 build full path to file
-                var fullPathToFile = Path.Combine(pathToImgFolder, newFilename);
-                //5 check if file exists
-                if (Path.Exists(fullPathToFile))
-                {
-                    //fix later with exception
-                    Console.WriteLine("FileExists");
-                }
-                //6 copy file from memory to filepath location
-                using (FileStream fileStream = new(fullPathToFile, FileMode.Create))
-                {
-                    //copy from memory(iformfile) to fullPathtoFile
-                    horsesAddViewModel.Image.CopyTo(fileStream);
-                }
+                newFilename = await _fileService.StoreFile(horsesAddViewModel.Image);
             }
             //create a horse object
             var horse = new Horse 

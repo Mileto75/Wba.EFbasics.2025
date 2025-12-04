@@ -8,6 +8,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container. => DI
 //register the FormBuilderService
 builder.Services.AddScoped<IFormBuilderService, FormBuilderService>();
+builder.Services.AddScoped<IFileService, FileServiceV2>();
 //activate the server session
 builder.Services.AddSession();
 //add the database service
